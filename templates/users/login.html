@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="section">
+      <div class="container">
+        <div class="row full-height justify-content-center">
+          <div class="col-12 text-center align-self-center py-5">
+            <div class="section pb-5 pt-5 pt-sm-2 text-center">
+              <h6 class="mb-0 pb-3"><span>Вход</span><span>Регистрация</span></h6>
+              <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
+              <label for="reg-log"></label>
+              <div class="card-3d-wrap mx-auto">
+                <div class="card-3d-wrapper">
+                  <div class="card-front">
+                    <div class="center-wrap">
+                      <div class="section text-center">
+                        <h4 class="mb-4 pb-3">Войти</h4>
+                          <form action="" method="post" id="login">
+                              {{ log_form.hidden_tag() }}
+                        <div class="form-group" name="logemail">
+                            {{ log_form.email(type="email", class="form-style", placeholder="Ваша почта", id="logemail", autocomplete="off") }}<br>
+                            {% for error in log_form.email.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                            <div class="input-icon uil uil-at">
+                                <img src="static/img/email.png" alt="@" srcset=""
+                                style="width: 32px;">
+                            </div>
+                        </div>
+                        <div class="form-group mt-2" name="logpass">
+                          {{ log_form.password(class="form-style", type="password", placeholder="Ваш пароль", id="logpass", autocomplete="off") }}<br>
+                            {% for error in log_form.password.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                          <div class="input-icon uil uil-lock-alt">
+                                <img src="static/img/password_2.png" alt="🔒" srcset=""
+                                style="width: 32px;">
+                          </div>
+                        </div>
+                        <p class="mb-0 mt-4 text-center">{{ log_form.remember_me(class="mb-0 mt-4 text-center") }} {{ log_form.remember_me.label }}</p>
+                        <p>{{ log_form.submit(type="submit", class="btn mt-4", form="login") }}</p>
+                        <div>{{ message }}</div>
+                        <p class="mb-0 mt-4 text-center"><a href="/" class="link">Forgot your password?</a></p>
+                          </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-back">
+                    <div class="center-wrap">
+                      <div class="section text-center">
+                        <h4 class="mb-4 pb-3">Зарегестрироваться</h4>
+                          <form action="" method="post" id="signup">
+                              {{ reg_form.hidden_tag() }}
+                        <div class="form-group" name="logname">
+                          {{ reg_form.name(type="text", class="form-style", placeholder="Ваше имя", id="logname", autocomplete="off") }}<br>
+                          {% for error in reg_form.name.errors %}
+                              <p class="alert alert-danger" role="alert">
+                                  {{ error }}
+                              </p>
+                          {% endfor %}
+                          <div class="input-icon">
+                                <img src="static/img/profile_2.png" alt="" srcset=""
+                                style="width: 32px;">
+                          </div>
+                        </div>
+                        <div class="form-group mt-2" name="logemail">
+                          {{ reg_form.email(type="email", class="form-style", placeholder="Ваша почта", id="logemail", autocomplete="off") }}<br>
+                          {% for error in reg_form.email.errors %}
+                              <p class="alert alert-danger" role="alert">
+                                  {{ error }}
+                              </p>
+                          {% endfor %}
+                          <div class="input-icon">
+                                <img src="static/img/email_for_registr.png" alt="" srcset=""
+                                style="width: 32px;">
+                          </div>
+                        </div>
+                        <div class="form-group mt-2" name="logpass">
+                          {{ reg_form.password(type="password", class="form-style", placeholder="Введите пароль", id="logpass", autocomplete="off") }}<br>
+                          {% for error in reg_form.password.errors %}
+                              <p class="alert alert-danger" role="alert">
+                                  {{ error }}
+                              </p>
+                          {% endfor %}
+                          <div class="input-icon">
+                                <img src="static/img/password_for_registr.png" alt="" srcset=""
+                                style="width: 32px;">
+                          </div>
+                        </div>
+                        <div class="form-group mt-2">
+                          {{ reg_form.password_again(type="password", class="form-style", placeholder="Подтвердите пароль", id="logpass", autocomplete="off") }}<br>
+                          {% for error in reg_form.password_again.errors %}
+                              <p class="alert alert-danger" role="alert">
+                                  {{ error }}
+                              </p>
+                          {% endfor %}
+                          <div class="input-icon">
+                                <img src="static/img/password_double.png" alt="" srcset=""
+                                style="width: 32px;">
+                          </div>
+                        </div>
+                        <p>{{ reg_form.submit(type="submit", class="btn mt-4", form="signup") }}</p>
+                            {{message}}
+                          </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
