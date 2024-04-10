@@ -2,7 +2,7 @@ from data.utils import logout_required, confirm_token, generate_token
 from flask import redirect, url_for, render_template, Blueprint
 from data import db_session
 from forms.user import LoginForm, RegisterForm, AskRecoveryForm, AcceptRecoveryForm, RecoveryForm
-from data.__all_models import User
+from data.__all_models import User, Card
 from flask_login import login_required, login_user, logout_user, current_user
 from flask import current_app as app
 from smtplib import SMTP_SSL
@@ -23,18 +23,21 @@ def login():
         'reg_form': reg_form,
         'log_form': log_form
     }
-    if log_form.validate_on_submit():
+    print(log_form.log_submit.data, log_form.validate())
+    print(log_form.email.data, log_form.password.data, log_form.remember_me.data)
+    if log_form.log_submit.data and log_form.validate():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == log_form.email.data).first()
+        print(user, user.check_password(log_form.password.data))
         if user and user.check_password(log_form.password.data):
             login_user(user, remember=log_form.remember_me.data)
-            return redirect("/")
+            return redirect("/index")
         elif not user.is_confirmed:
             params['message'] = "Вы не подтвердили аккаунт по почте"
         else:
             params['message'] = "Неправильный логин или пароль"
-        # return render_template('users/login.html', **params)
-    if reg_form.validate_on_submit():
+        return render_template('users/login.html', **params)
+    if reg_form.reg_submit.data and reg_form.validate():
         if reg_form.password.data != reg_form.password_again.data:
             params['message'] = "Пароли не совпадают"
             return render_template('users/login.html', **params)
@@ -61,7 +64,7 @@ def login():
             server.login(app.config['MAIL_DEFAULT_SENDER'], app.config['MAIL_PASSWORD'])
             server.sendmail(app.config['MAIL_USERNAME'], user.email, msg.as_string())
             server.close()
-        return redirect('/')
+        return redirect('/index')
     return render_template('users/login.html', **params)
 
 
@@ -71,16 +74,17 @@ def confirm_email(token):
         'title': 'Подтверждение аккаунта',
         'message': str()
     }
-
-
-    if current_user.is_confirmed:
-        params['message'] = "Аккаунт уже подтверждён"
-        return render_template('users/account_confirm.html', **params)
     db_sess = db_session.create_session()
     email = confirm_token(token)
     user = db_sess.query(User).filter(User.email == email).first()
     if user:
+        if user.is_confirmed:
+            params['message'] = "Аккаунт уже подтверждён"
+            return render_template('users/account_confirm.html', **params)
         user.is_confirmed = True
+        for i in range(1, 7):
+            for card in db_sess.query(Card).filter(Card.id == i).all():
+                user.cards.append(card)
         db_sess.merge(user)
         db_sess.commit()
         params['message'] = "Аккаунт успешно подтверждён"
@@ -92,7 +96,7 @@ def confirm_email(token):
 
 
 @blueprint.route("/recovery_account", methods=['GET', 'POST'])
-@login_required
+@logout_required
 def recovery_account():
     form = AskRecoveryForm()
     params = {
@@ -157,4 +161,14 @@ def logout():
 
 @blueprint.route('/profile/<int:id>')
 def profile(id: int):
-    pass
+    params = {
+        'message': str()
+    }
+    db_sess = db_session.create_session()
+    prof = db_sess.query(User).filter(User.id == id)
+    if prof:
+        params['profile'] = prof
+        params['is_current'] = id == current_user.id
+        return render_template('users/profile.html', **params)
+    params['message'] = "Ошибка. Такого пользователя нет."
+    return render_template('users/profile.html', **params)

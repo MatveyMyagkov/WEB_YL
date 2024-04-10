@@ -1,22 +1,22 @@
 from flask_wtf import FlaskForm
 from wtforms import *
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length
 
 
 class RegisterForm(FlaskForm):
     email = EmailField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
-    name = StringField('Имя пользователя', validators=[DataRequired()])
+    name = StringField('Имя пользователя', validators=[DataRequired(), Length(min=4, max=32)])
     remember_me = BooleanField('Запомнить меня')
-    submit = SubmitField('Зарегестрироваться')
+    reg_submit = SubmitField('Зарегестрироваться')
 
 
 class LoginForm(FlaskForm):
     email = EmailField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
-    submit = SubmitField('Войти')
+    log_submit = SubmitField('Войти')
 
 
 class AskRecoveryForm(FlaskForm):

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="Navigator\style.css">
+</head>
+
+    <div class="body_all_prof">
+        <div class="container_all_prof" >
+            <div class="imagebox">
+                <img src="{{url_for('static', filename='img/profile.png')}}" class="img1">
+            </div>
+        <span class="object_all_p objblue"></span>
+        <span class="bigtext">GO</span>
+        <div class="title">Веб программист</div>
+        <div class="buySection">
+            <h2><sup>$</sup>0<span></span></h2>
+            <button class="bluebtn">GET start</button>
+        </div>
+        </div>
+
+        <div class="container_all_prof" >
+            <div class="imagebox">
+                <img src="{{url_for('static', filename='img/profile.png')}}" class="img1">
+            </div>
+            <span class="object_all_p objred"></span>
+            <span class="bigtext">GO</span>
+            <div class="title">Gamedev</div>
+            <div class="buySection">
+                <h2><sup>$</sup>0<span></span></h2>
+                <button class="redbtn">GET start</button>
+            </div>
+        </div>
+
+        <div class="container_all_prof" >
+            <div class="imagebox">
+                <img src="{{url_for('static', filename='img/profile.png')}}" class="img1">
+            </div>
+            <span class="object_all_p objviolete"></span>
+            <span class="bigtext">GO</span>
+            <div class="title">Data science, ML</div>
+            <div class="buySection">
+                <h2><sup>$</sup>0<span></span></h2>
+                <button class="violetebtn">GET start</button>
+            </div>
+        </div>
+        <div class="bgposter"></div>
+        </div>
+    <script src="script.js"></script>
+    </div>
+
+{% endblock %}
