@@ -21,7 +21,20 @@ def scope(card: int):
 def professions():
     params = dict()
     return render_template("Navigator/all_professions.html", **params)
+@blueprint.route('/profession/WEB')
+def WEB():
+    params = dict()
+    return render_template("Navigator/WEB.html", **params)
 
+@blueprint.route('/profession/game_dev')
+def game_dev():
+    params = dict()
+    return render_template("Navigator/game_dev.html", **params)
+
+@blueprint.route('/profession/data_science')
+def data_science():
+    params = dict()
+    return render_template("Navigator/data_science.html", **params)
 
 @blueprint.route('/profession/<int:card>')
 def profession(card: int):
